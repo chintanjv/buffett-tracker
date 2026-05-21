@@ -1,0 +1,60 @@
+name: Update Portfolio Data
+
+on:
+  schedule:
+    # Run every day at 6:00 AM UTC (11 PM PT / 2 AM ET)
+    # 13F filings drop on SEC at ~5:30 PM ET; this catches overnight updates
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Also allow manual trigger from GitHub UI
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # needed to push back to the repo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('scripts/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch latest portfolio data
+        run: python scripts/fetch_data.py
+        env:
+          # Optional: set a real contact email for SEC EDGAR User-Agent header
+          CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL || 'research@example.com' }}
+
+      - name: Check if data changed
+        id: diff
+        run: |
+          git diff --quiet data/portfolio.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push updated data
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "Buffett Tracker Bot"
+          git config user.email "actions@github.com"
+          git add data/portfolio.json
+          git commit -m "chore: update portfolio data [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
+
+      - name: No changes detected
+        if: steps.diff.outputs.changed == 'false'
+        run: echo "portfolio.json is up to date, nothing to commit."

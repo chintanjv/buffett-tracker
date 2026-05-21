@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buffett Tracker — Berkshire Hathaway Portfolio</title>
+  <meta name="description" content="Live tracking of Warren Buffett's Berkshire Hathaway public equity portfolio, sourced directly from SEC EDGAR 13F filings." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <!-- GridStack for drag-and-drop layout -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack-all.js"></script>
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ TOP NAV ══ -->
+<header class="top-nav">
+  <div class="nav-brand">
+    <span class="brand-oracle">The Oracle</span>
+    <span class="brand-of">of</span>
+    <span class="brand-omaha">Omaha</span>
+  </div>
+  <div class="nav-meta" id="lastUpdated">Loading...</div>
+  <div class="nav-actions">
+    <button class="btn-icon" id="themeToggle" title="Toggle theme (D)">☀</button>
+    <a class="btn-outline" href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001067294&type=13F-HR&dateb=&owner=include&count=10" target="_blank" rel="noopener">
+      SEC Filing ↗
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════ HERO ══ -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Berkshire Hathaway<br><em>Portfolio Tracker</em></h1>
+    <p class="hero-sub">Real-time tracking of Warren Buffett's public equity holdings via SEC EDGAR 13F-HR filings.</p>
+  </div>
+  <div class="stat-cards" id="statCards">
+    <div class="stat-card" data-action="filter-all">
+      <div class="stat-label">Total Portfolio Value</div>
+      <div class="stat-value" id="statTotalValue">—</div>
+      <div class="stat-sub" id="statQuarter">—</div>
+    </div>
+    <div class="stat-card" data-action="filter-new">
+      <div class="stat-label">Holdings</div>
+      <div class="stat-value" id="statHoldings">—</div>
+      <div class="stat-sub">public equities</div>
+    </div>
+    <div class="stat-card highlight-green" data-action="filter-buys">
+      <div class="stat-label">Biggest Buy</div>
+      <div class="stat-value" id="statBigBuy">—</div>
+      <div class="stat-sub" id="statBigBuySub">this quarter</div>
+    </div>
+    <div class="stat-card highlight-red" data-action="filter-sells">
+      <div class="stat-label">Biggest Sell</div>
+      <div class="stat-value" id="statBigSell">—</div>
+      <div class="stat-sub" id="statBigSellSub">this quarter</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ NEW THIS QUARTER BANNER ══ -->
+<section class="new-quarter-banner" id="newQuarterBanner">
+  <div class="banner-title">🆕 New This Quarter</div>
+  <div class="banner-trades" id="bannerTrades">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FILTERS ══ -->
+<aside class="filter-panel" id="filterPanel">
+  <div class="filter-header">
+    <span>Filters</span>
+    <button class="btn-reset" id="resetFilters" title="Reset all (R)">Reset ✕</button>
+  </div>
+
+  <div class="filter-group">
+    <label>Search</label>
+    <input type="search" id="searchInput" placeholder="Ticker or company…" autocomplete="off" />
+  </div>
+
+  <div class="filter-group">
+    <label>Quarter</label>
+    <select id="quarterFilter">
+      <option value="all">All quarters</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Trade Type</label>
+    <div class="toggle-chips" id="typeFilter">
+      <button class="chip active" data-val="Buy">Buy</button>
+      <button class="chip active" data-val="New">New</button>
+      <button class="chip active" data-val="Reduced">Reduced</button>
+      <button class="chip active" data-val="Sold">Sold</button>
+      <button class="chip active" data-val="Hold">Hold</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <label>Sector</label>
+    <select id="sectorFilter" multiple>
+      <!-- Populated by JS -->
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>Conviction Tier</label>
+    <div class="toggle-chips" id="tierFilter">
+      <button class="chip active" data-val="Mega">Mega &gt;10%</button>
+      <button class="chip active" data-val="Major">Major 5–10%</button>
+      <button class="chip active" data-val="Mid">Mid 1–5%</button>
+      <button class="chip active" data-val="Minor">Minor &lt;1%</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════ MAIN GRID ══ -->
+<main class="dashboard-main">
+  <div class="grid-stack" id="mainGrid">
+
+    <!-- ── Top 10 Holdings ── -->
+    <div class="grid-stack-item" gs-w="4" gs-h="7" gs-x="0" gs-y="0" gs-id="top10">
+      <div class="grid-stack-item-content card">
+        <div class="card-header">
+          <h2 class="card-title">Top 10 Holdings</h2>
+          <button class="card-collapse" title="Collapse">▾</button>
+        </div>
+        <div class="card-body" id="top10List">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Portfolio Distribution Chart ── -->
+    <div class="grid-stack-item" gs-w="4" gs-h="7" gs-x="4" gs-y="0" gs-id="pieChart">
+      <div class="grid-stack-item-content card">
+        <div class="card-header">
+          <h2 class="card-title">Portfolio Distribution</h2>
+          <div class="card-header-actions">
+            <button class="btn-pill active" id="chartByStock">By Stock</button>
+            <button class="btn-pill" id="chartBySector">By Sector</button>
+            <button class="btn-icon" id="downloadPie" title="Download chart">↓</button>
+            <button class="card-collapse" title="Collapse">▾</button>
+          </div>
+        </div>
+        <div class="card-body chart-container">
+          <canvas id="portfolioPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sector Allocation ── -->
+    <div class="grid-stack-item" gs-w="4" gs-h="7" gs-x="8" gs-y="0" gs-id="sectorChart">
+      <div class="grid-stack-item-content card">
+        <div class="card-header">
+          <h2 class="card-title">Sector Allocation</h2>
+          <div class="card-header-actions">
+            <button class="btn-icon" id="downloadSector" title="Download chart">↓</button>
+            <button class="card-collapse" title="Collapse">▾</button>
+          </div>
+        </div>
+        <div class="card-body chart-container">
+          <canvas id="sectorBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Conviction Tiers ── -->
+    <div class="grid-stack-item" gs-w="3" gs-h="5" gs-x="0" gs-y="7" gs-id="tiers">
+      <div class="grid-stack-item-content card">
+        <div class="card-header">
+          <h2 class="card-title">Conviction Tiers</h2>
+          <button class="card-collapse" title="Collapse">▾</button>
+        </div>
+        <div class="card-body" id="tiersList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Quarter Comparison ── -->
+    <div class="grid-stack-item" gs-w="9" gs-h="5" gs-x="3" gs-y="7" gs-id="qtrCompare">
+      <div class="grid-stack-item-content card">
+        <div class="card-header">
+          <h2 class="card-title">Trade History</h2>
+          <div class="card-header-actions">
+            <button class="btn-pill" id="exportCsv">Export CSV</button>
+            <select id="rowsPerPage" title="Rows per page">
+              <option value="10">10 rows</option>
+              <option value="25">25 rows</option>
+              <option value="50">50 rows</option>
+            </select>
+            <button class="card-collapse" title="Collapse">▾</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="data-table" id="tradesTable">
+              <thead>
+                <tr>
+                  <th data-col="ticker" class="sortable">Ticker ↕</th>
+                  <th data-col="name" class="sortable">Company ↕</th>
+                  <th data-col="type" class="sortable">Type ↕</th>
+                  <th data-col="shares" class="sortable">Shares ↕</th>
+                  <th data-col="value_thousands" class="sortable">Est. Value ↕</th>
+                  <th data-col="portfolio_impact" class="sortable">Port. Impact ↕</th>
+                  <th data-col="filing_date" class="sortable">Filed ↕</th>
+                  <th data-col="quarter" class="sortable">Quarter ↕</th>
+                </tr>
+              </thead>
+              <tbody id="tradesBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+            <div id="emptyState" class="empty-state" style="display:none">
+              <p>No trades match your filters.</p>
+              <button onclick="document.getElementById('resetFilters').click()">Reset Filters</button>
+            </div>
+          </div>
+          <div class="pagination" id="pagination">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid-stack -->
+</main>
+
+<!-- ═══════════════════════════════════════════ ROW DETAIL PANEL ══ -->
+<div class="row-detail" id="rowDetail" style="display:none">
+  <div class="row-detail-inner">
+    <button class="row-detail-close" id="closeDetail">✕ Close</button>
+    <div id="rowDetailContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FOOTER ══ -->
+<footer class="site-footer">
+  <p>Data sourced from <a href="https://www.sec.gov/" target="_blank" rel="noopener">SEC EDGAR</a> public 13F-HR filings. Not financial advice. Holdings as of most recent quarterly filing.</p>
+  <p>Built with ❤️ using vanilla HTML/CSS/JS, Chart.js, and GridStack.js.</p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
