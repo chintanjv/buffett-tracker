@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-08-15T06:37:23.798528+00:00",
+    "last_updated": "2026-08-16T06:39:22.193724+00:00",
     "filing_date": "2026-08-14",
     "period_of_report": "2026-06-30",
     "quarter": "Q2 2026",
@@ -109,7 +109,7 @@
       "sector": "Energy",
       "portfolio_pct": 4.3,
       "prev_shares": 264941431,
-      "prev_pct": 6.55,
+      "prev_pct": 4.3,
       "change_type": "Hold",
       "share_change": 0,
       "share_change_pct": 0.0
@@ -154,7 +154,7 @@
       "sector": "Energy",
       "portfolio_pct": 3.23,
       "prev_shares": 3454258,
-      "prev_pct": 0.27,
+      "prev_pct": 0.19,
       "change_type": "Buy",
       "share_change": 54797491,
       "share_change_pct": 1586.38
@@ -184,7 +184,7 @@
       "sector": "Consumer Staples",
       "portfolio_pct": 2.57,
       "prev_shares": 325634818,
-      "prev_pct": 2.78,
+      "prev_pct": 2.57,
       "change_type": "Hold",
       "share_change": 0,
       "share_change_pct": 0.0
@@ -303,11 +303,11 @@
       "price": 180.06,
       "sector": "Healthcare",
       "portfolio_pct": 1.11,
-      "prev_shares": 14973608,
-      "prev_pct": 0.87,
-      "change_type": "Hold",
-      "share_change": 0,
-      "share_change_pct": 0.0
+      "prev_shares": 13906601,
+      "prev_pct": 1.03,
+      "change_type": "Buy",
+      "share_change": 1067007,
+      "share_change_pct": 7.67
     },
     {
       "cusip": "829933100",
@@ -333,11 +333,11 @@
       "price": 180.06,
       "sector": "Healthcare",
       "portfolio_pct": 1.03,
-      "prev_shares": 14973608,
-      "prev_pct": 0.87,
-      "change_type": "Reduced",
-      "share_change": -1067007,
-      "share_change_pct": -7.13
+      "prev_shares": 13906601,
+      "prev_pct": 1.03,
+      "change_type": "Hold",
+      "share_change": 0,
+      "share_change_pct": 0.0
     },
     {
       "cusip": "02079K305",
@@ -364,7 +364,7 @@
       "sector": "Energy",
       "portfolio_pct": 0.75,
       "prev_shares": 3454258,
-      "prev_pct": 0.27,
+      "prev_pct": 0.19,
       "change_type": "Buy",
       "share_change": 10023420,
       "share_change_pct": 290.18
@@ -424,7 +424,7 @@
       "sector": "Energy",
       "portfolio_pct": 0.51,
       "prev_shares": 3454258,
-      "prev_pct": 0.27,
+      "prev_pct": 0.19,
       "change_type": "Buy",
       "share_change": 5737913,
       "share_change_pct": 166.11
@@ -634,7 +634,7 @@
       "sector": "Energy",
       "portfolio_pct": 0.19,
       "prev_shares": 3454258,
-      "prev_pct": 0.27,
+      "prev_pct": 0.19,
       "change_type": "Hold",
       "share_change": 0,
       "share_change_pct": 0.0
@@ -723,11 +723,11 @@
       "price": 227.34,
       "sector": "Financials",
       "portfolio_pct": 0.12,
-      "prev_shares": 1939213,
-      "prev_pct": 0.13,
-      "change_type": "Reduced",
-      "share_change": -77325,
-      "share_change_pct": -3.99
+      "prev_shares": 1138112,
+      "prev_pct": 0.08,
+      "change_type": "Buy",
+      "share_change": 723776,
+      "share_change_pct": 63.59
     },
     {
       "cusip": "530909308",
@@ -754,7 +754,7 @@
       "sector": "Materials",
       "portfolio_pct": 0.11,
       "prev_shares": 1319884,
-      "prev_pct": 0.04,
+      "prev_pct": 0.03,
       "change_type": "Buy",
       "share_change": 3025025,
       "share_change_pct": 229.19
@@ -843,11 +843,11 @@
       "price": 227.34,
       "sector": "Financials",
       "portfolio_pct": 0.08,
-      "prev_shares": 1939213,
-      "prev_pct": 0.13,
-      "change_type": "Reduced",
-      "share_change": -801101,
-      "share_change_pct": -41.31
+      "prev_shares": 1138112,
+      "prev_pct": 0.08,
+      "change_type": "Hold",
+      "share_change": 0,
+      "share_change_pct": 0.0
     },
     {
       "cusip": "060505104",
@@ -994,7 +994,7 @@
       "sector": "Materials",
       "portfolio_pct": 0.03,
       "prev_shares": 1319884,
-      "prev_pct": 0.04,
+      "prev_pct": 0.03,
       "change_type": "Hold",
       "share_change": 0,
       "share_change_pct": 0.0
@@ -1540,7 +1540,7 @@
       "shares": 54797491,
       "price": 200.0,
       "value_thousands": 10959498,
-      "portfolio_impact": 2.96,
+      "portfolio_impact": 3.04,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1648,7 +1648,7 @@
       "shares": 10023420,
       "price": 200.0,
       "value_thousands": 2004684,
-      "portfolio_impact": 0.48,
+      "portfolio_impact": 0.56,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1708,7 +1708,7 @@
       "shares": 5737913,
       "price": 200.0,
       "value_thousands": 1147582,
-      "portfolio_impact": 0.24,
+      "portfolio_impact": 0.32,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1804,7 +1804,7 @@
       "shares": 3025025,
       "price": 73.89,
       "value_thousands": 223519,
-      "portfolio_impact": 0.07,
+      "portfolio_impact": 0.08,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1824,11 +1824,11 @@
       "quarter": "Q2 2026",
       "ticker": "DVA",
       "name": "DAVITA INC",
-      "type": "Reduced",
-      "shares": -1067007,
+      "type": "Buy",
+      "shares": 1067007,
       "price": 180.06,
-      "value_thousands": -192125,
-      "portfolio_impact": 0.16,
+      "value_thousands": 192125,
+      "portfolio_impact": 0.08,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1836,11 +1836,11 @@
       "quarter": "Q2 2026",
       "ticker": "COF",
       "name": "CAPITAL ONE FINL CORP",
-      "type": "Reduced",
-      "shares": -801101,
+      "type": "Buy",
+      "shares": 723776,
       "price": 227.34,
-      "value_thousands": -182122,
-      "portfolio_impact": -0.05,
+      "value_thousands": 164543,
+      "portfolio_impact": 0.04,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
@@ -1913,18 +1913,6 @@
       "price": 87.71,
       "value_thousands": 25126,
       "portfolio_impact": 0.01,
-      "filing_date": "2026-08-14",
-      "transaction_date": "2026-06-30"
-    },
-    {
-      "quarter": "Q2 2026",
-      "ticker": "COF",
-      "name": "CAPITAL ONE FINL CORP",
-      "type": "Reduced",
-      "shares": -77325,
-      "price": 227.34,
-      "value_thousands": -17579,
-      "portfolio_impact": -0.01,
       "filing_date": "2026-08-14",
       "transaction_date": "2026-06-30"
     },
